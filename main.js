@@ -98,7 +98,7 @@ backToTop.addEventListener('mouseout', () => {
   backToTop.style.boxShadow = '0 4px 15px rgba(99, 102, 241, 0.3)';
 });
 
-const cards = document.querySelectorAll('.project-card, .c1, .service-card');
+const cards = document.querySelectorAll('.project-card, .c1, .service-card, .cert-card');
 cards.forEach(card => {
   card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-8px) scale(1.05)');
   card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
