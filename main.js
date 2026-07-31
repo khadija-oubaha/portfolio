@@ -133,3 +133,60 @@ function type() {
 }
 
 document.addEventListener('DOMContentLoaded', type);
+
+// Hire Me button: scrolls to the contact form (doesn't depend on the visitor's email setup)
+const hireBtn = document.querySelector('.btn-home1');
+if (hireBtn) {
+  hireBtn.addEventListener('click', () => {
+    const contactSection = document.getElementById('contact');
+    window.scrollTo({ top: contactSection.offsetTop - 80, behavior: 'smooth' });
+  });
+}
+
+// Contact form: sends via Formspree and shows a visible confirmation on screen
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = contactForm.querySelector('.btn-send');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    formStatus.className = 'form-status';
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        formStatus.textContent = "✓ Message sent! I'll get back to you soon.";
+        formStatus.className = 'form-status show success';
+        contactForm.reset();
+      } else {
+        formStatus.textContent = "✗ Something went wrong. Please try again or email me directly.";
+        formStatus.className = 'form-status show error';
+      }
+    } catch (error) {
+      formStatus.textContent = "✗ Something went wrong. Please try again or email me directly.";
+      formStatus.className = 'form-status show error';
+    }
+
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+
+    setTimeout(() => {
+      formStatus.className = 'form-status';
+    }, 6000);
+  });
+}
+
+// Placeholder links (skills tags, "Confidential Project", "Team Project") use href="#"
+// on purpose since they don't go anywhere — this stops them from jumping to the top.
+document.querySelectorAll('a[href="#"]').forEach(link => {
+  link.addEventListener('click', (e) => e.preventDefault());
+});
